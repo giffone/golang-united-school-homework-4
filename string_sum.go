@@ -3,7 +3,6 @@ package string_sum
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -27,17 +26,22 @@ var (
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
 func StringSum(input string) (output string, err error) {
-	input = strings.Trim(input, " ")
 	lInput := len(input)
 	if lInput == 0 {
-		return "", fmt.Errorf("%s", errorEmptyInput.Error())
+		return "", errorEmptyInput
 	}
 	buf := bytes.Buffer{}
 	for index := 0; index < lInput; index++ {
+		if input[index] == ' ' {
+			continue
+		}
 		if input[index] == '-' || input[index] == '+' {
 			buf.WriteByte(' ')
 		}
 		buf.WriteByte(input[index])
+	}
+	if buf.Len() == 0 {
+		return "", errorEmptyInput
 	}
 	numS := strings.Split(buf.String(), " ")
 	numN := []int{}
@@ -47,19 +51,19 @@ func StringSum(input string) (output string, err error) {
 		}
 		n, err := strconv.Atoi(numS[i])
 		if err != nil {
-			return "", fmt.Errorf("%s", err.Error())
+			return "", err
 		}
 		numN = append(numN, n)
 	}
 	lNumN := len(numN)
 	if lNumN == 0 {
-		return "", fmt.Errorf("%s", errorNotTwoOperands.Error())
+		return "", errorNotTwoOperands
 	}
 	if lNumN < 2 {
 		return strconv.Itoa(numN[0]), nil
 	}
 	if lNumN > 2 {
-		return "", fmt.Errorf("%s", errorNotTwoOperands.Error())
+		return "", errorNotTwoOperands
 	}
 	return strconv.Itoa(numN[0] + numN[1]), nil
 }
