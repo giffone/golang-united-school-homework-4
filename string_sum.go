@@ -43,27 +43,27 @@ func StringSum(input string) (output string, err error) {
 	if buf.Len() == 0 {
 		return "", errorEmptyInput
 	}
-	numS := strings.Split(buf.String(), " ")
-	numN := []int{}
-	for i := 0; i < len(numS); i++ {
-		if numS[i] == "" || numS[i] == "+" || numS[i] == "-" {
+	str := strings.Split(buf.String(), " ")
+	number := []int{}
+	for i := 0; i < len(str); i++ {
+		if str[i] == "" || str[i] == "+" || str[i] == "-" {
 			continue
 		}
-		n, err := strconv.Atoi(numS[i])
+		n, err := strconv.Atoi(str[i])
 		if err != nil {
 			return "", err
 		}
-		numN = append(numN, n)
+		number = append(number, n)
 	}
-	lNumN := len(numN)
-	if lNumN == 0 {
+	lNumber := len(number)
+	if lNumber == 0 {
 		return "", errorNotTwoOperands
 	}
-	if lNumN == 1 {
-		return strconv.Itoa(numN[0]), nil
+	if lNumber < 2 {
+		return input, nil
 	}
-	if lNumN > 2 {
+	if lNumber > 2 {
 		return "", errorNotTwoOperands
 	}
-	return strconv.Itoa(numN[0] + numN[1]), nil
+	return strconv.Itoa(number[0] + number[1]), nil
 }
