@@ -3,6 +3,7 @@ package string_sum
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -30,15 +31,25 @@ func StringSum(input string) (output string, err error) {
 	if len(input) == 0 {
 		return "", fmt.Errorf("%s", errorEmptyInput.Error())
 	}
-	nums := strings.Split(input, "+")
-	lNums := len(nums)
-	if lNums != 2 {
+	numsS := strings.Split(input, "+")
+	numsN := []int{}
+	for i := 0; i < len(numsS); i++ {
+		if numsS[i] == "" {
+			continue
+		}
+		n, err := strconv.Atoi(numsS[i])
+		if err != nil {
+			log.Println("here")
+			return "", err
+		}
+		numsN = append(numsN, n)
+	}
+	lNums := len(numsN)
+	if lNums < 2 {
+		return strconv.Itoa(numsN[0]), nil
+	}
+	if lNums > 2 {
 		return "", fmt.Errorf("%s", errorNotTwoOperands.Error())
 	}
-	n1, err1 := strconv.Atoi(nums[0])
-	n2, err2 := strconv.Atoi(nums[1])
-	if err1 != nil || err2 != nil {
-		return "", fmt.Errorf("wrong characters")
-	}
-	return strconv.Itoa(n1 + n2), nil
+	return strconv.Itoa(numsN[0] + numsN[1]), nil
 }
