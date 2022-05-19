@@ -3,8 +3,6 @@ package string_sum
 import (
 	"bytes"
 	"errors"
-	"fmt"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -31,11 +29,11 @@ func StringSum(input string) (output string, err error) {
 	input = strings.Trim(input, " ")
 	lInput := len(input)
 	if lInput == 0 {
-		return "", fmt.Errorf("%s", errorEmptyInput.Error())
+		return "", errorEmptyInput
 	}
 	buf := bytes.Buffer{}
 	for index := 0; index < lInput; index++ {
-		if input[index] < '0' || input[index] > '9' {
+		if input[index] == '-' {
 			buf.WriteByte('+')
 		}
 		buf.WriteByte(input[index])
@@ -48,7 +46,6 @@ func StringSum(input string) (output string, err error) {
 		}
 		n, err := strconv.Atoi(numsS[i])
 		if err != nil {
-			log.Println("here")
 			return "", err
 		}
 		numsN = append(numsN, n)
@@ -58,7 +55,7 @@ func StringSum(input string) (output string, err error) {
 		return strconv.Itoa(numsN[0]), nil
 	}
 	if lNums > 2 {
-		return "", fmt.Errorf("%s", errorNotTwoOperands.Error())
+		return "", errorNotTwoOperands
 	}
 	return strconv.Itoa(numsN[0] + numsN[1]), nil
 }
