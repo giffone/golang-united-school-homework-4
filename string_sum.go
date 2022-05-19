@@ -39,24 +39,24 @@ func StringSum(input string) (output string, err error) {
 		}
 		buf.WriteByte(input[index])
 	}
-	numsS := strings.Split(buf.String(), "+")
-	numsN := []int{}
-	for i := 0; i < len(numsS); i++ {
-		if numsS[i] == "" {
+	numS := strings.Split(buf.String(), "+")
+	numN := []int{}
+	for i := 0; i < len(numS); i++ {
+		if numS[i] == "" {
 			continue
 		}
-		n, err := strconv.Atoi(numsS[i])
+		n, err := strconv.Atoi(numS[i])
 		if err != nil {
 			return "", fmt.Errorf("%s", err.Error())
 		}
-		numsN = append(numsN, n)
+		numN = append(numN, n)
 	}
-	lNumN := len(numsN)
+	lNumN := len(numN)
 	if lNumN < 2 {
-		return strconv.Itoa(numsN[0]), nil
+		return strconv.Itoa(numN[0]), nil
 	}
 	if lNumN > 2 {
 		return "", fmt.Errorf("%s", errorNotTwoOperands.Error())
 	}
-	return strconv.Itoa(numsN[0] + numsN[1]), nil
+	return strconv.Itoa(numN[0] + numN[1]), nil
 }
