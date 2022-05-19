@@ -3,6 +3,7 @@ package string_sum
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -28,42 +29,35 @@ var (
 func StringSum(input string) (output string, err error) {
 	lInput := len(input)
 	if lInput == 0 {
-		return "", errorEmptyInput
+		return "", fmt.Errorf("empty: %w", errorEmptyInput)
 	}
 	buf := bytes.Buffer{}
 	for index := 0; index < lInput; index++ {
 		if input[index] == ' ' {
 			continue
 		}
-		if input[index] == '-' || input[index] == '+' {
+		if (input[index] == '-' || input[index] == '+') && index != 0 {
 			buf.WriteByte(' ')
 		}
 		buf.WriteByte(input[index])
 	}
 	if buf.Len() == 0 {
-		return "", errorEmptyInput
+		return "", fmt.Errorf("empty: %w", errorEmptyInput)
 	}
+	var number []int
 	str := strings.Split(buf.String(), " ")
-	number := []int{}
 	for i := 0; i < len(str); i++ {
 		if str[i] == "" || str[i] == "+" || str[i] == "-" {
 			continue
 		}
 		n, err := strconv.Atoi(str[i])
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("atoi: %w", err)
 		}
 		number = append(number, n)
 	}
-	lNumber := len(number)
-	if lNumber == 0 {
-		return "", errorNotTwoOperands
-	}
-	if lNumber < 2 {
-		return input, nil
-	}
-	if lNumber > 2 {
-		return "", errorNotTwoOperands
+	if len(number) != 2 {
+		return "", fmt.Errorf("more or less: %w", errorNotTwoOperands)
 	}
 	return strconv.Itoa(number[0] + number[1]), nil
 }
