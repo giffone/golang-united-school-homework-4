@@ -34,15 +34,15 @@ func StringSum(input string) (output string, err error) {
 	}
 	buf := bytes.Buffer{}
 	for index := 0; index < lInput; index++ {
-		if input[index] == '-' {
-			buf.WriteByte('+')
+		if input[index] == '-' || input[index] == '+' {
+			buf.WriteByte(' ')
 		}
 		buf.WriteByte(input[index])
 	}
-	numS := strings.Split(buf.String(), "+")
+	numS := strings.Split(buf.String(), " ")
 	numN := []int{}
 	for i := 0; i < len(numS); i++ {
-		if numS[i] == "" {
+		if numS[i] == "" || numS[i] == "+" || numS[i] == "-" {
 			continue
 		}
 		n, err := strconv.Atoi(numS[i])
@@ -52,6 +52,9 @@ func StringSum(input string) (output string, err error) {
 		numN = append(numN, n)
 	}
 	lNumN := len(numN)
+	if lNumN == 0 {
+		return "", fmt.Errorf("%s", errorNotTwoOperands.Error())
+	}
 	if lNumN < 2 {
 		return strconv.Itoa(numN[0]), nil
 	}
