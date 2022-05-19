@@ -59,7 +59,7 @@ func StringSum(input string) (output string, err error) {
 	if lNumN == 0 {
 		return "", errorNotTwoOperands
 	}
-	if lNumN < 2 {
+	if lNumN == 1 {
 		return strconv.Itoa(numN[0]), nil
 	}
 	if lNumN > 2 {
