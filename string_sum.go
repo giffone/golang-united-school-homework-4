@@ -1,6 +1,7 @@
 package string_sum
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"log"
@@ -28,10 +29,18 @@ var (
 
 func StringSum(input string) (output string, err error) {
 	input = strings.Trim(input, " ")
-	if len(input) == 0 {
+	lInput := len(input)
+	if lInput == 0 {
 		return "", fmt.Errorf("%s", errorEmptyInput.Error())
 	}
-	numsS := strings.Split(input, "+")
+	buf := bytes.Buffer{}
+	for index := 0; index < lInput; index++ {
+		if input[index] < '0' || input[index] > '9' {
+			buf.WriteByte('+')
+		}
+		buf.WriteByte(input[index])
+	}
+	numsS := strings.Split(buf.String(), "+")
 	numsN := []int{}
 	for i := 0; i < len(numsS); i++ {
 		if numsS[i] == "" {
