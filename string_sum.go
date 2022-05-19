@@ -2,9 +2,12 @@ package string_sum
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
+	"strings"
 )
 
-//use these errors as appropriate, wrapping them with fmt.Errorf function
+// use these errors as appropriate, wrapping them with fmt.Errorf function
 var (
 	// Use when the input is empty, and input is considered empty if the string contains only whitespace
 	errorEmptyInput = errors.New("input is empty")
@@ -23,5 +26,19 @@ var (
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
 func StringSum(input string) (output string, err error) {
-	return "", nil
+	input = strings.Trim(input, " ")
+	if len(input) == 0 {
+		return "", fmt.Errorf("%s", errorEmptyInput.Error())
+	}
+	nums := strings.Split(input, "+")
+	lNums := len(nums)
+	if lNums != 2 {
+		return "", fmt.Errorf("%s", errorNotTwoOperands.Error())
+	}
+	n1, err1 := strconv.Atoi(nums[0])
+	n2, err2 := strconv.Atoi(nums[1])
+	if err1 != nil || err2 != nil {
+		return "", fmt.Errorf("wrong characters")
+	}
+	return strconv.Itoa(n1 + n2), nil
 }
